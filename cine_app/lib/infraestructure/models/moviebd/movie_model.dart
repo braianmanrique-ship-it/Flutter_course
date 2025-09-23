@@ -35,17 +35,17 @@ class MovieModel {
   factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
     adult: json["adult"] ?? false,
     backdropPath: json["backdrop_path"] ?? "",
-    genreIds: json["genre_ids"] ?? [],
+    genreIds: List<int>.from(json["genre_ids"] ?? []),
     id: json["id"] ?? 0,
     originalLanguage: json["original_language"] ?? "",
     originalTitle: json["original_title"] ?? "",
     overview: json["overview"] ?? "",
-    popularity: json["popularity"] ?? 0,
+    popularity: (json["popularity"] ?? 0).toDouble(),
     posterPath: json["poster_path"] ?? "",
     releaseDate: json["release_date"] ?? "",
     title: json["title"] ?? "",
     video: json["video"] ?? false,
-    voteAverage: json["vote_average"] ?? 0,
+    voteAverage: (json["vote_average"] ?? 0).toDouble(),
     voteCount: json["vote_count"] ?? 0,
   );
 
