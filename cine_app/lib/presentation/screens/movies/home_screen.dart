@@ -10,7 +10,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _HomeView());
+    return Scaffold(
+      body: _HomeView(),
+      bottomNavigationBar: CustomBottomNavigation(),
+    );
   }
 }
 
@@ -36,14 +39,15 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       children: [
         const CustomAppBar(),
         MoviesCardSwiper(movies: nowPlayingMovies),
-        Expanded(
+        /*  Expanded(
           child: ListView.builder(
             itemCount: nowPlayingMovies.length,
             itemBuilder: (context, index) {
               return ListTile(title: Text(nowPlayingMovies[index].title));
             },
           ),
-        ),
+        ), */
+        const Spacer(),
       ],
     );
   }
