@@ -1,6 +1,7 @@
 import 'package:cine_app/presentation/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cine_app/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = "home-screen";
@@ -9,10 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Cine App")),
-      body: _HomeView(),
-    );
+    return Scaffold(body: _HomeView());
   }
 }
 
@@ -34,12 +32,18 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
 
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(nowPlayingMovies[index].title));
-      },
+    return Column(
+      children: [
+        const CustomAppBar(),
+        Expanded(
+          child: ListView.builder(
+            itemCount: nowPlayingMovies.length,
+            itemBuilder: (context, index) {
+              return ListTile(title: Text(nowPlayingMovies[index].title));
+            },
+          ),
+        ),
+      ],
     );
   }
 }
