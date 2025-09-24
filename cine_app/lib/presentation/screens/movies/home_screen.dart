@@ -39,15 +39,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       children: [
         const CustomAppBar(),
         MoviesCardSwiper(movies: nowPlayingMovies),
-        /*  Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text(nowPlayingMovies[index].title));
-            },
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                MovieHorizontalList(
+                  movies: nowPlayingMovies,
+                  title: "En cines",
+                  subtitle: "2025",
+                ),
+              ],
+            ),
           ),
-        ), */
-        const Spacer(),
+        ),
       ],
     );
   }
