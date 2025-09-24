@@ -30,8 +30,8 @@ class MoviesCardSwiper extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 10),
+                blurRadius: 100,
+                offset: Offset(0, 10),
               ),
             ],
           ),
