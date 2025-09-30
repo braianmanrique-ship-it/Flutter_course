@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cine_app/domain/entities/movie.dart';
+import 'package:cine_app/config/helpers/numformat.dart';
 
 class MovieHorizontalList extends StatelessWidget {
   final List<Movie> movies;
@@ -100,11 +101,11 @@ class _SlideMovie extends StatelessWidget {
             children: [
               Icon(Icons.star_half_rounded, color: Colors.yellow),
               Text(
-                movie.voteAverage.toString(),
+                Numformat.number(movie.voteAverage),
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
               ),
               Text(
-                "(${movie.voteCount})",
+                "(${Numformat.numerlarge(movie.voteCount.toDouble())})",
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
               ),
             ],
