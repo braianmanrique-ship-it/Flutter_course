@@ -4,6 +4,7 @@ import 'package:cine_app/domain/entities/movie.dart';
 
 class MoviesCardSwiper extends StatelessWidget {
   final List<Movie> movies;
+  
 
   const MoviesCardSwiper({super.key, required this.movies});
 

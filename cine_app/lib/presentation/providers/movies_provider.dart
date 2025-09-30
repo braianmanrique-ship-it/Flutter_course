@@ -16,14 +16,29 @@ typedef MovieCallback = Future<List<Movie>> Function({int page});
 class MoviesNotifier extends StateNotifier<List<Movie>> {
   int currentPage = 0;
   MovieCallback fetchMoreMovies;
+  bool isLoading = false;
+  static const int maxMovies = 10;
 
   MoviesNotifier({required this.fetchMoreMovies}) : super([]);
 
   Future<void> loadNextPage() async {
+    if (isLoading) return;
+    isLoading = true;
     currentPage++;
 
     final List<Movie> movies = await fetchMoreMovies(page: currentPage);
 
-    state = [...state, ...movies];
+    final newState = [...state, ...movies];
+
+    if (newState.length >= maxMovies) {
+      state = newState.skip(newState.length - maxMovies).toList();
+    } else {
+      state = newState;
+    }
+    await Future.delayed(const Duration(milliseconds: 300));
+    isLoading = false;
   }
+
+  //mas recientes
+  List<Movie> get recentMovies => state.take(10).toList();
 }
