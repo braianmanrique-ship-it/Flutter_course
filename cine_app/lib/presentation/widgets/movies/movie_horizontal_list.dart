@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/config/helpers/numformat.dart';
 
-class MovieHorizontalList extends StatelessWidget {
+class MovieHorizontalList extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final String? subtitle;
-  final VoidCallbackAction? loadNextPage;
+  final VoidCallback? loadNextPage;
 
   const MovieHorizontalList({
     super.key,
@@ -15,6 +15,31 @@ class MovieHorizontalList extends StatelessWidget {
     this.subtitle,
     this.loadNextPage,
   });
+
+  @override
+  State<MovieHorizontalList> createState() => _MovieHorizontalListState();
+}
+
+class _MovieHorizontalListState extends State<MovieHorizontalList> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
+      if ((scrollController.position.pixels + 100) >=
+          scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +51,7 @@ class MovieHorizontalList extends StatelessWidget {
           Row(
             children: [
               Text(
-                title ?? "",
+                widget.title ?? "",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -34,7 +59,7 @@ class MovieHorizontalList extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                subtitle ?? "",
+                widget.subtitle ?? "",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,
@@ -46,11 +71,12 @@ class MovieHorizontalList extends StatelessWidget {
           SizedBox(
             height: 300, // Altura fija para el ListView horizontal
             child: ListView.builder(
-              itemCount: movies.length,
+              controller: scrollController,
+              itemCount: widget.movies.length,
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return _SlideMovie(movie: movies[index]);
+                return _SlideMovie(movie: widget.movies[index]);
               },
             ),
           ),
