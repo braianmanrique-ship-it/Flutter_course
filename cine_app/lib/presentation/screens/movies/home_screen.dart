@@ -38,19 +38,28 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     return Column(
       children: [
         const CustomAppBar(),
-        MoviesCardSwiper(movies: nowPlayingMovies),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               children: [
+                MoviesCardSwiper(movies: nowPlayingMovies),
                 MovieHorizontalList(
                   movies: nowPlayingMovies,
                   title: "En cines",
                   subtitle: "2025",
-                  loadNextPage: (){
+                  loadNextPage: () {
                     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-                  }
+                  },
                 ),
+                MovieHorizontalList(
+                  movies: nowPlayingMovies,
+                  title: "Mas vistas",
+                  subtitle: "Siempre en tendencia",
+                  loadNextPage: () {
+                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                  },
+                ),
+                const SizedBox(height: 100),
               ],
             ),
           ),
