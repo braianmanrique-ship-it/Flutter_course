@@ -29,11 +29,13 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
 
     return Column(
       children: [
@@ -52,11 +54,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   },
                 ),
                 MovieHorizontalList(
-                  movies: nowPlayingMovies,
+                  movies: popularMovies,
                   title: "Mas vistas",
                   subtitle: "Siempre en tendencia",
                   loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    ref.read(popularMoviesProvider.notifier).loadNextPage();
+                  },
+                ),
+                 MovieHorizontalList(
+                  movies: popularMovies,
+                  title: "Proximamente",
+                  subtitle: "Proximamente",
+                  loadNextPage: () {
+                    ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
                 ),
                 const SizedBox(height: 100),

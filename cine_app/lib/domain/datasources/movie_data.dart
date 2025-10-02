@@ -4,4 +4,6 @@ abstract class MovieData {
 
   Future <List<Movie>> getNowPlayMovies({int page = 1});
 
+  Future <List<Movie>> getPopularMovies({int page = 1});
+
 }

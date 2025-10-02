@@ -11,4 +11,8 @@ class MovieRepoImplementation extends MovieRepo {
   Future<List<Movie>> getNowPlayMovies({int page = 1}) async {
     return await dataSource.getNowPlayMovies(page: page);
   }
+
+  Future<List<Movie>> getPopularMovies({int page = 1}) async {
+    return await dataSource.getPopularMovies(page: page);
+  }
 }
