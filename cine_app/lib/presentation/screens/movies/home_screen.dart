@@ -30,13 +30,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
-
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
     return Column(
       children: [
         const CustomAppBar(),
@@ -61,12 +62,12 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                     ref.read(popularMoviesProvider.notifier).loadNextPage();
                   },
                 ),
-                 MovieHorizontalList(
-                  movies: popularMovies,
+                MovieHorizontalList(
+                  movies: upcomingMovies,
                   title: "Proximamente",
                   subtitle: "Proximamente",
                   loadNextPage: () {
-                    ref.read(popularMoviesProvider.notifier).loadNextPage();
+                    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
                   },
                 ),
                 const SizedBox(height: 100),
