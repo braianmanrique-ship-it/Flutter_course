@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/config/helpers/numformat.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalList extends StatefulWidget {
   final List<Movie> movies;
@@ -108,8 +109,16 @@ class _SlideMovie extends StatelessWidget {
                 fit: BoxFit.cover,
                 width: 150,
                 loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(child: CircularProgressIndicator());
+                  if (loadingProgress != null) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        context.push("/movie/${movie.id}");
+                      },
+                      child: child,
+                    );
+                  }
                 },
               ),
             ),
