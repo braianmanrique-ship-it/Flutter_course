@@ -38,6 +38,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
+
+    return ScreenLoader();
+
     return Column(
       children: [
         const CustomAppBar(),

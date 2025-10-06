@@ -69,7 +69,7 @@ class _MovieHorizontalListState extends State<MovieHorizontalList> {
           ),
           const SizedBox(height: 10),
           SizedBox(
-            height: 300, // Altura fija para el ListView horizontal
+            height: 260, // Altura fija para el ListView horizontal
             child: ListView.builder(
               controller: scrollController,
               itemCount: widget.movies.length,
