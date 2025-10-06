@@ -1,4 +1,5 @@
 import 'package:cine_app/presentation/providers/movies_provider.dart';
+import 'package:cine_app/presentation/widgets/movies/initial_loading_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cine_app/presentation/widgets/widgets.dart';
@@ -35,11 +36,13 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingProvider);
+
+    if (initialLoading) return ScreenLoader();
+
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
-
-    return ScreenLoader();
 
     return Column(
       children: [
