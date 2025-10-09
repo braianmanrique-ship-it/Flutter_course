@@ -12,11 +12,18 @@ class MovieRepoImplementation extends MovieRepo {
     return await dataSource.getNowPlayMovies(page: page);
   }
 
+  @override
   Future<List<Movie>> getPopularMovies({int page = 1}) async {
     return await dataSource.getPopularMovies(page: page);
   }
 
+  @override
   Future<List<Movie>> getUpcomingMovies({int page = 1}) async {
     return await dataSource.getUpcomingMovies(page: page);
+  }
+
+  @override
+  Future<Movie> getMovieById({String? id}) {
+    return dataSource.getMovieById(id: id);
   }
 }
