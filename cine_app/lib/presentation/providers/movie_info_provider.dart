@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/presentation/movies/movie_repo.dart';
 
-final movieInfoProvider = StateNotifierProvider((ref) {
+final movieInfoProvider = StateNotifierProvider<MovieMapNotifier, Map<String, Movie>>((ref) {
   final movieRepo = ref.watch(movieRepoProvider);
 
   return MovieMapNotifier(
@@ -19,6 +19,8 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
 
   Future<void> loadMovie(String movieId) async {
     if (state[movieId] != null) return;
+
+    print("loading movie $movieId");
 
     final movie = await getMovie(movieId);
     state = {...state, movieId: movie};
