@@ -24,9 +24,62 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   @override
   Widget build(BuildContext context) {
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
-    if(movie == null){
+    if (movie == null) {
       return const Center(child: CircularProgressIndicator());
     }
-    return Scaffold(body: Center(child: Text('Movie Id: ${widget.movieId}')));
+    return Scaffold(
+      body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [_SliverAppBar(movie: movie)],
+      ),
+    );
+  }
+}
+
+class _SliverAppBar extends StatelessWidget {
+  final Movie movie;
+
+  const _SliverAppBar({required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return SliverAppBar(
+      expandedHeight: size.height * 0.7,
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: false,
+        titlePadding: const EdgeInsets.only(left: 20, bottom: 10),
+        title: Text(
+          movie.title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          textAlign: TextAlign.start,
+        ),
+        background: Stack(
+          children: [
+            SizedBox.expand(
+              child: Image.network(movie.posterPath, fit: BoxFit.cover),
+            ),
+            const SizedBox.expand(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.transparent, Colors.black54],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
