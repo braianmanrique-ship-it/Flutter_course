@@ -2,6 +2,7 @@ import 'package:cine_app/presentation/providers/movie_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cine_app/domain/entities/movie.dart';
+import 'package:cine_app/config/helpers/genre_helper.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = "movie-screen";
@@ -139,9 +140,9 @@ class _MovieDetails extends StatelessWidget {
           child: Wrap(
             children: [
               ...movie.genreIds.map(
-                (gen) => Container(
+                (genreId) => Container(
                   margin: const EdgeInsets.only(right: 10, bottom: 10),
-                  child: Chip(label: Text(gen.toString())),
+                  child: Chip(label: Text(getGenreName(genreId))),
                 ),
               ),
             ],
