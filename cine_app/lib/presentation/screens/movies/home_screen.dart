@@ -1,4 +1,4 @@
-import 'package:cine_app/presentation/providers/movies_provider.dart';
+import 'package:cine_app/presentation/providers/movies/movies_provider.dart';
 import 'package:cine_app/presentation/widgets/movies/initial_loading_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
