@@ -4,6 +4,7 @@ import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/config/helpers/genre_helper.dart';
 /* Providers */
 import 'package:cine_app/presentation/providers/providers.dart';
+import 'package:cine_app/presentation/providers/actors/actors_by_movie_provider.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = "movie-screen";
@@ -103,7 +104,7 @@ class _MovieDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final TextStyles = Theme.of(context).textTheme;
+    final textStyles = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,8 +128,8 @@ class _MovieDetails extends StatelessWidget {
                 width: (size.width - 80) * 0.7,
                 child: Column(
                   children: [
-                    Text(movie.title, style: TextStyles.headlineSmall),
-                    Text(movie.overview, style: TextStyles.bodySmall),
+                    Text(movie.title, style: textStyles.headlineSmall),
+                    Text(movie.overview, style: textStyles.bodySmall),
                   ],
                 ),
               ),
@@ -150,7 +151,71 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
+        /* Actores */
+        _ActorsList(movieId: movie.id.toString()),
       ],
+    );
+  }
+}
+
+class _ActorsList extends ConsumerWidget {
+  final String movieId;
+
+  const _ActorsList({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final actors = ref.watch(actorsByMovieProvider)[movieId.toString()];
+    final textStyles = Theme.of(context).textTheme;
+
+    if (actors == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final actorsList = actors;
+
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actorsList.length,
+        itemBuilder: (context, index) {
+          final actor = actorsList[index];
+
+          return Container(
+            padding: const EdgeInsets.all(10),
+            width: 120,
+            child: Column(
+              children: [
+                /* foto */
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    actor.profilePath,
+                    width: 200,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Text(
+                  actor.name,
+                  style: textStyles.bodyMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  actor.character ?? "",
+                  style: textStyles.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
