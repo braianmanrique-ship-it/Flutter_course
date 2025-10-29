@@ -26,6 +26,7 @@ class ActorsByMovieNotifier extends StateNotifier<Map<String, List<Actor>>> {
     if (state[movieId] != null) return;
 
     debugPrint("loading actors for movie $movieId");
+    debugPrint("getActors: ${await getActors(movieId)}");
 
     final actors = await getActors(movieId);
     state = {...state, movieId: actors};
