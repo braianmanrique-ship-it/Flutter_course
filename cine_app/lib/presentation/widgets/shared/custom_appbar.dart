@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cine_app/presentation/delegates/search_movie_delegate.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final delegate = SearchMovieDelegate();
+
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -42,7 +45,9 @@ class CustomAppBar extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showSearch(context: context, delegate: delegate);
+                },
                 icon: const Icon(Icons.search, size: 30, color: Colors.white),
               ),
             ],
