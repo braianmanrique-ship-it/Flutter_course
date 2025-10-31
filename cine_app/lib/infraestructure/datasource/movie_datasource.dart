@@ -58,11 +58,24 @@ class MovieDatasource extends MovieData {
   @override
   Future<Movie> getMovieById({String? id}) async {
     final response = await dio.get("/movie/$id");
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw Exception("Error al obtener el movie");
+    }
     final movie = MovieMapper.movieDetailsToMovie(
       MovieDetails.fromJson(response.data),
     );
     return movie;
+  }
+
+  /* search */
+  @override
+  Future<List<Movie>> searchMovies({String? query}) async {
+    if (query == null) return [];
+    final response = await dio.get(
+      "/search/movie",
+      queryParameters: {"query": query},
+    );
+    final movies = _jsontoMovie(response.data);
+    return movies;
   }
 }
