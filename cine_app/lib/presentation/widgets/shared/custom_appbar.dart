@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cine_app/presentation/delegates/search_movie_delegate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cine_app/presentation/providers/providers.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends ConsumerWidget {
   const CustomAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final delegate = SearchMovieDelegate();
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -46,7 +46,19 @@ class CustomAppBar extends StatelessWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {
-                  showSearch(context: context, delegate: delegate);
+                  final movieRepository = ref.read(movieRepoProvider);
+
+                  showSearch(
+                    context: context,
+                    delegate: SearchMovieDelegate(
+                      searchMovies: (query) async {
+                        final movies = await movieRepository.searchMovies(
+                          query: query,
+                        );
+                        return movies;
+                      },
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.search, size: 30, color: Colors.white),
               ),
