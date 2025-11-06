@@ -17,7 +17,9 @@ class MovieMapper {
     posterPath: movieResponse.posterPath != ""
         ? "https://image.tmdb.org/t/p/w500/${movieResponse.posterPath}"
         : "https://marketplace.canva.com/EAEbNyW0c8A/1/0/1131w/canva-azul-tormenta-mar-pel%C3%ADcula-p%C3%B3ster-mFNHMKQlmUs.jpg",
-    releaseDate: movieResponse.releaseDate,
+    releaseDate: movieResponse.releaseDate != ""
+        ? movieResponse.releaseDate
+        : "No se ha encontrado la fecha de estreno",
     title: movieResponse.title,
     video: movieResponse.video,
     voteAverage: movieResponse.voteAverage,
@@ -38,7 +40,9 @@ class MovieMapper {
     posterPath: (movieDetails.posterPath != "")
         ? "https://image.tmdb.org/t/p/w500/${movieDetails.posterPath}"
         : "https://marketplace.canva.com/EAEbNyW0c8A/1/0/1131w/canva-azul-tormenta-mar-pel%C3%ADcula-p%C3%B3ster-mFNHMKQlmUs.jpg",
-    releaseDate: movieDetails.releaseDate.toString(),
+    releaseDate: movieDetails.releaseDate != null
+        ? movieDetails.releaseDate!.toString()
+        : "No se ha encontrado la fecha de estreno",
     title: movieDetails.title,
     video: movieDetails.video,
     voteAverage: movieDetails.voteAverage,
