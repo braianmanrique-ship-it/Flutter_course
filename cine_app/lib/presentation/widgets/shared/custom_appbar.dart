@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cine_app/presentation/delegates/search_movie_delegate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cine_app/presentation/providers/providers.dart';
+import 'package:cine_app/domain/entities/movie.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends ConsumerWidget {
   const CustomAppBar({super.key});
@@ -45,19 +47,19 @@ class CustomAppBar extends ConsumerWidget {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {
+                onPressed: () async {
                   final movieRepository = ref.read(movieRepoProvider);
 
-                  showSearch(
+                  await showSearch<Movie?>(
                     context: context,
                     delegate: SearchMovieDelegate(
-                      searchMovies: (query) async {
-                        final movies = await movieRepository.searchMovies(
-                          query: query,
-                        );
-                        return movies;
-                      },
+                      searchMovies: (query) =>
+                          movieRepository.searchMovies(query: query),
                     ),
+                  ).then(
+                    (movie) => movie != null
+                        ? context.push("/movie/${movie.id}")
+                        : null,
                   );
                 },
                 icon: const Icon(Icons.search, size: 30, color: Colors.white),

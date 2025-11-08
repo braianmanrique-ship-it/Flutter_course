@@ -29,7 +29,7 @@ class MovieRepoImplementation extends MovieRepo {
 
   /* search */
   @override
-  Future<List<Movie>> searchMovies({String? query}) {
-    return dataSource.searchMovies(query: query ?? "");
+  Future<List<Movie>> searchMovies({String query = ""}) async {
+    return await dataSource.searchMovies(query);
   }
 }

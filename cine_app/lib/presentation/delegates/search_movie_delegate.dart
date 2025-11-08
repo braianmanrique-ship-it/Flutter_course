@@ -73,7 +73,7 @@ class MovieItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: () => {movieSelected(movie)},
+      onTap: () => movieSelected(),
 
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

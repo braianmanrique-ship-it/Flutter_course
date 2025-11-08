@@ -11,5 +11,5 @@ abstract class MovieData {
   Future<Movie> getMovieById({String? id});
 
   /* search */
-  Future<List<Movie>> searchMovies({String query});
+  Future<List<Movie>> searchMovies(String query);
 }
