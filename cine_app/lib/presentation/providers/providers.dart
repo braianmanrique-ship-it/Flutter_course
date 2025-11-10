@@ -5,3 +5,5 @@ export 'movies/movies_provider.dart';
 export 'movies/movie_info_provider.dart';
 
 export '../../../presentation/movies/movie_repo.dart';
+
+export 'search/search_movies_provider.dart';
