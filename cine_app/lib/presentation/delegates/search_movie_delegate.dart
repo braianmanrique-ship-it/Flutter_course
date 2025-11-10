@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/config/helpers/numformat.dart';
+import 'package:animate_do/animate_do.dart';
 
 typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 
@@ -12,6 +13,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   //debounce -> delay -> espera a que el usuario deje de escribir
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  StreamController<bool> isLoading = StreamController.broadcast();
   Timer? _debounce;
 
   SearchMovieDelegate({required this.searchMovies, required this.initialMovies})
@@ -21,17 +23,14 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       );
 
   void _onQueryChanged(String query) {
+    isLoading.add(true);
     if (_debounce?.isActive ?? false) _debounce?.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () async {
-      if (query.isEmpty) {
-        debounceMovies.add([]);
-        return;
-      }
-
       final movies = await searchMovies(query);
       initialMovies = movies;
       debounceMovies.add(movies);
+      isLoading.add(false);
     });
   }
 
@@ -43,7 +42,30 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     debugPrint(query);
     if (query.isEmpty) return null;
     return [
-      IconButton(onPressed: () => query = "", icon: const Icon(Icons.clear)),
+      StreamBuilder(
+        initialData: false,
+        stream: isLoading.stream,
+        builder: (context, snapshot) {
+          if (snapshot.data ?? false) {
+            return SpinPerfect(
+              duration: const Duration(milliseconds: 500),
+              spins: 10,
+              infinite: query.isNotEmpty,
+              child: IconButton(
+                onPressed: () => query = "",
+                icon: const Icon(Icons.refresh),
+              ),
+            );
+          }
+          return IconButton(
+            onPressed: () {
+              query = "";
+              _onQueryChanged(query);
+            },
+            icon: const Icon(Icons.clear),
+          );
+        },
+      ),
     ];
   }
 
