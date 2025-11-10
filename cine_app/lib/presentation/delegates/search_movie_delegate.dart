@@ -8,11 +8,17 @@ typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 
 class SearchMovieDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallback searchMovies;
+  List<Movie> initialMovies = [];
 
   //debounce -> delay -> espera a que el usuario deje de escribir
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
   Timer? _debounce;
-  SearchMovieDelegate({required this.searchMovies});
+
+  SearchMovieDelegate({required this.searchMovies, required this.initialMovies})
+    : super(
+        searchFieldLabel: "Busca tu pelicula",
+        textInputAction: TextInputAction.search,
+      );
 
   void _onQueryChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -22,7 +28,9 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
         debounceMovies.add([]);
         return;
       }
+
       final movies = await searchMovies(query);
+      initialMovies = movies;
       debounceMovies.add(movies);
     });
   }
@@ -57,9 +65,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     _onQueryChanged(query);
 
     return StreamBuilder(
-      //future: searchMovies(query),
+      initialData: initialMovies,
       stream: debounceMovies.stream,
-      initialData: const [],
       builder: (context, snapshot) {
         final movies = snapshot.data ?? [];
 
@@ -69,7 +76,9 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
             final movie = movies[index];
             return MovieItem(
               movie: movie,
-              movieSelected: () => close(context, movie),
+              movieSelected: (context, movie) {
+                close(context, movie);
+              },
             );
           },
         );
@@ -80,7 +89,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
 class MovieItem extends StatelessWidget {
   final Movie movie;
-  final Function movieSelected;
+  final Function(BuildContext, Movie) movieSelected;
 
   const MovieItem({
     super.key,
@@ -94,7 +103,7 @@ class MovieItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: () => movieSelected(),
+      onTap: () => movieSelected(context, movie),
 
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
