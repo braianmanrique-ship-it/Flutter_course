@@ -1,33 +1,63 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cine_app/presentation/screens/screens.dart';
 import 'package:cine_app/presentation/views/views.dart';
 
+final GlobalKey<NavigatorState> _homeNavigatorState = GlobalKey<NavigatorState>(
+  debugLabel: "homeNavigator",
+);
+final GlobalKey<NavigatorState> _categoriesState = GlobalKey<NavigatorState>(
+  debugLabel: "categoriesNavigator",
+);
+final GlobalKey<NavigatorState> _favoritesState = GlobalKey<NavigatorState>(
+  debugLabel: "favoritesNavigator",
+);
+
 final appRoutes = GoRouter(
   initialLocation: "/",
   routes: [
-    ShellRoute(
-      builder: (context, state, child) {
-        return HomeScreen(childView: child);
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return HomeScreen(navigationShell: navigationShell);
       },
-      routes: [
-        GoRoute(
-          path: "/",
-          name: HomeView.name,
-          builder: (context, state) => HomeView(),
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: _homeNavigatorState,
           routes: [
             GoRoute(
-              path: "/movie/:id",
-              name: MovieScreen.name,
-              builder: (context, state) =>
-                  MovieScreen(movieId: state.pathParameters["id"] ?? ""),
+              path: "/",
+              name: HomeView.name,
+              builder: (context, state) => const HomeView(),
+              routes: [
+                GoRoute(
+                  path: "/movie/:id",
+                  name: MovieScreen.name,
+                  builder: (context, state) =>
+                      MovieScreen(movieId: state.pathParameters["id"] ?? ""),
+                ),
+              ],
             ),
           ],
         ),
-
-        GoRoute(
-          path: "/favorites",
-          name: FavoritesView.name,
-          builder: (context, state) => FavoritesView(),
+        StatefulShellBranch(
+          navigatorKey: _categoriesState,
+          routes: [
+            GoRoute(
+              path: "/categories",
+              name: CategoriesView.name,
+              builder: (context, state) => const CategoriesView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _favoritesState,
+          routes: [
+            GoRoute(
+              path: "/favorites",
+              name: FavoritesView.name,
+              builder: (context, state) => const FavoritesView(),
+            ),
+          ],
         ),
       ],
     ),
