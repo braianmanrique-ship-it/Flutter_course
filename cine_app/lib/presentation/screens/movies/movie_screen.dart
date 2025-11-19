@@ -59,8 +59,12 @@ class _SliverAppBar extends StatelessWidget {
 
     return SliverAppBar(
       expandedHeight: size.height * 0.7,
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.black,
       foregroundColor: Colors.white,
+      /* actions */
+      actions: [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_outline)),
+      ],
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: false,
         titlePadding: const EdgeInsets.only(left: 20, bottom: 10),
@@ -82,12 +86,20 @@ class _SliverAppBar extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
+                    stops: [0.7, 0.95],
                     colors: [Colors.transparent, Colors.black54],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                 ),
               ),
+            ),
+            /* sombra corazon */
+            _CustomGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.0, 0.4],
+              colors: [Colors.transparent, Colors.black54],
             ),
           ],
         ),
@@ -215,6 +227,36 @@ class _ActorsList extends ConsumerWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CustomGradient extends StatelessWidget {
+  final AlignmentGeometry begin;
+  final AlignmentGeometry end;
+  final List<double> stops;
+  final List<Color> colors;
+
+  const _CustomGradient({
+    required this.begin,
+    required this.end,
+    required this.stops,
+    required this.colors,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: begin,
+            end: end,
+            stops: stops,
+            colors: colors,
+          ),
+        ),
       ),
     );
   }
