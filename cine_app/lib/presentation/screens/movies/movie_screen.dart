@@ -1,3 +1,4 @@
+import 'package:cine_app/presentation/providers/storage/favorite_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cine_app/domain/entities/movie.dart';
@@ -48,13 +49,13 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
-class _SliverAppBar extends StatelessWidget {
+class _SliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _SliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
 
     return SliverAppBar(
@@ -63,7 +64,14 @@ class _SliverAppBar extends StatelessWidget {
       foregroundColor: Colors.white,
       /* actions */
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_outline)),
+        IconButton(
+          onPressed: () async{
+            ref
+                .read(favoriteMoviesProvider.notifier)
+                .toggleFavoriteMovie(movie);
+          },
+          icon: const Icon(Icons.favorite_outline),
+        ),
       ],
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: false,
