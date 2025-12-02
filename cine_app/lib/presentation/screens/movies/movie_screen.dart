@@ -5,7 +5,7 @@ import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/config/helpers/genre_helper.dart';
 /* Providers */
 import 'package:cine_app/presentation/providers/providers.dart';
-import 'package:cine_app/presentation/providers/actors/actors_by_movie_provider.dart';
+import 'package:cine_app/presentation/providers/storage/is_favorite_movie_provider.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = "movie-screen";
@@ -57,6 +57,7 @@ class _SliverAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+    final isfavorite = ref.watch(isFavoriteMovieProvider(movie.id));
 
     return SliverAppBar(
       expandedHeight: size.height * 0.7,
@@ -65,12 +66,19 @@ class _SliverAppBar extends ConsumerWidget {
       /* actions */
       actions: [
         IconButton(
-          onPressed: () async{
-            ref
+          onPressed: () async {
+            await ref
                 .read(favoriteMoviesProvider.notifier)
                 .toggleFavoriteMovie(movie);
+            ref.invalidate(isFavoriteMovieProvider(movie.id));
           },
-          icon: const Icon(Icons.favorite_outline),
+          icon: isfavorite.when(
+            data: (isFavorite) => isFavorite
+                ? const Icon(Icons.favorite, color: Colors.red)
+                : const Icon(Icons.favorite_outline, color: Colors.white),
+            error: (error, stackTrace) => Icon(Icons.error, color: Colors.red),
+            loading: () => const CircularProgressIndicator(),
+          ),
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
