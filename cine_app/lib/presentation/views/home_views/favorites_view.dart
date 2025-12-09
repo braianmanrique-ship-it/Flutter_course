@@ -24,8 +24,11 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
     final favoriteMovies = ref.watch(favoriteMoviesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Favorites")),
-      body: MovieMansory(movies: favoriteMovies.values.toList()),
+      body: MovieMansory(
+        movies: favoriteMovies.values.toList(),
+        loadMoreMovies: () =>
+            ref.read(favoriteMoviesProvider.notifier).loadFavorites(),
+      ),
     );
   }
 }

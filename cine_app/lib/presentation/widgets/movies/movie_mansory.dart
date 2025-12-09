@@ -16,10 +16,38 @@ class MovieMansory extends StatefulWidget {
 class _MovieMansoryState extends State<MovieMansory> {
   bool isLastPage = false;
   bool isLoading = false;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(() {
+      if (widget.loadMoreMovies == null) return;
+      if (scrollController.position.pixels + 100 >=
+          scrollController.position.maxScrollExtent) {
+        loadNextPageMovies();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  void loadNextPageMovies() async {
+    if (isLoading || isLastPage) return;
+    if (widget.loadMoreMovies == null) return;
+
+    isLoading = true;
+    final newMovies = await widget.loadMoreMovies!();
+    isLoading = false;
+
+    if (newMovies.isEmpty) {
+      isLastPage = true;
+      return;
+    }
   }
 
   @override
@@ -27,6 +55,7 @@ class _MovieMansoryState extends State<MovieMansory> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: MasonryGridView.count(
+        controller: scrollController,
         crossAxisCount: 3,
         itemCount: widget.movies.length,
         mainAxisSpacing: 10,
