@@ -58,7 +58,7 @@ class DriftDatasource extends LocalStorageDatasource {
             adult: false,
             backdropPath: row.backdropPath,
             genreIds: const [],
-            id: row.id,
+            id: row.movieId,
             originalLanguage: "",
             originalTitle: row.originalTitle,
             overview: "",

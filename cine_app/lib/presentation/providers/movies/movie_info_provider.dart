@@ -2,13 +2,14 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:cine_app/domain/entities/movie.dart';
 import 'package:cine_app/presentation/movies/movie_repo.dart';
 
-final movieInfoProvider = StateNotifierProvider<MovieMapNotifier, Map<String, Movie>>((ref) {
-  final movieRepo = ref.watch(movieRepoProvider);
+final movieInfoProvider =
+    StateNotifierProvider<MovieMapNotifier, Map<String, Movie>>((ref) {
+      final movieRepo = ref.watch(movieRepoProvider);
 
-  return MovieMapNotifier(
-    getMovie: (String movieId) => movieRepo.getMovieById(id: movieId),
-  );
-});
+      return MovieMapNotifier(
+        getMovie: (String movieId) => movieRepo.getMovieById(id: movieId),
+      );
+    });
 
 typedef MovieInfoCalBack = Future<Movie> Function(String movieId);
 
