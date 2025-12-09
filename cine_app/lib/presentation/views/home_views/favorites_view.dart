@@ -22,7 +22,29 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
   @override
   Widget build(BuildContext context) {
     final favoriteMovies = ref.watch(favoriteMoviesProvider);
+    //sin favoritos
+    if (favoriteMovies.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.favorite_outline, size: 100, color: Colors.grey),
+              Text(
+                "No tienes favoritos",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Agrega tus peliculas favoritas para verlas aqui",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
+    //con favoritos
     return Scaffold(
       body: MovieMansory(
         movies: favoriteMovies.values.toList(),
