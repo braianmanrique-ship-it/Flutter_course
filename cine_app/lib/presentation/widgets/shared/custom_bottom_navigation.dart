@@ -10,7 +10,6 @@ class CustomBottomNavigation extends StatelessWidget {
     required this.onTap,
   });
 
-
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -19,10 +18,7 @@ class CustomBottomNavigation extends StatelessWidget {
       onTap: onTap,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.category_sharp),
-          label: "Categories",
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.shuffle), label: "Random"),
         BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorites"),
       ],
     );
