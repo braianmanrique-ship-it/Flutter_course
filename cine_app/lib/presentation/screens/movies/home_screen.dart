@@ -16,14 +16,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  bool _shouldBottom(BuildContext context) {
+    final location = GoRouterState.of(context).uri.path;
+    return !location.contains('/movie/');
+  }
+
   @override
   Widget build(BuildContext context) {
+    final shouldBottom = _shouldBottom(context);
+
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: navigationShell.currentIndex,
-        onTap: onNavigationShell,
-      ),
+      bottomNavigationBar: shouldBottom
+          ? CustomBottomNavigation(
+              currentIndex: navigationShell.currentIndex,
+              onTap: onNavigationShell,
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

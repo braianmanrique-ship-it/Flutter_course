@@ -17,7 +17,7 @@ class CustomAppBar extends ConsumerWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, 10),
             ),
@@ -25,7 +25,7 @@ class CustomAppBar extends ConsumerWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: SizedBox(
-          height: 50,
+          height: 65,
           width: double.infinity,
           child: Row(
             children: [

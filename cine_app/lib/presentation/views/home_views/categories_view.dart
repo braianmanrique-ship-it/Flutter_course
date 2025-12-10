@@ -27,14 +27,48 @@ class _CategoriesViewState extends ConsumerState<CategoriesView>
     }
 
     return Scaffold(
-      body: Container(
-        child: MovieMansory(
-          movies: upcomingMovies,
-          loadMoreMovies: () async {
-            await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-            return ref.read(upcomingMoviesProvider);
-          },
-        ),
+      body: Stack(
+        children: [
+          MovieMansory(
+            movies: upcomingMovies,
+            loadMoreMovies: () async {
+              await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+              return ref.read(upcomingMoviesProvider);
+            },
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black87.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.swipe_up_alt, color: Colors.white, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      "Desliza para cargar más",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
