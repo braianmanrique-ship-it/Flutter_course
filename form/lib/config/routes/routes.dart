@@ -3,9 +3,10 @@ import 'package:form/presentation/screens.dart';
 
 final appRouter = GoRouter(
   routes: [
+    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
     GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
+      path: '/counter',
+      builder: (context, state) => const CubitCounterScreen(),
     ),
-  ]
+  ],
 );
