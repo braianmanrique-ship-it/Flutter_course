@@ -1,5 +1,13 @@
 part of 'counter_cubit.dart';
 
-abstract class CounterState {}
+class CounterState {
+  final int counter;
+  final int transactions;
 
-class CounterStateInitial extends CounterState {}
+  CounterState({required this.counter, required this.transactions});
+
+  copyWith({int? counter, int? transactions}) => CounterState(
+    counter: counter ?? this.counter,
+    transactions: transactions ?? this.transactions,
+  );
+}
