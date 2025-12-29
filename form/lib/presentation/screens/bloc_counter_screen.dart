@@ -20,7 +20,7 @@ class _BlocCounterView extends StatelessWidget {
   }
 
   void counterIncreased10(BuildContext context, [int value = 10]) {
-    context.read<CounterBloc>().add(CounterIncremented(value: value));
+    context.read<CounterBloc>().add(CounterIncreased10());
   }
 
   void counterDecreased10(BuildContext context, [int value = -10]) {
@@ -67,6 +67,8 @@ class _BlocCounterView extends StatelessWidget {
               counterIncreased(context, 1);
             },
             heroTag: "1",
+            backgroundColor: Colors.purple,
+            foregroundColor: Colors.white,
             child: Text("+1"),
           ),
           SizedBox(width: 10),
@@ -75,6 +77,8 @@ class _BlocCounterView extends StatelessWidget {
               counterIncreased10(context, 10);
             },
             heroTag: "10",
+            backgroundColor: Colors.purple,
+            foregroundColor: Colors.white,
             child: Text("+10"),
           ),
           SizedBox(width: 10),
@@ -83,6 +87,8 @@ class _BlocCounterView extends StatelessWidget {
               counterDecreased10(context, -10);
             },
             heroTag: "-10",
+            backgroundColor: Colors.purple,
+            foregroundColor: Colors.white,
             child: Text("-10"),
           ),
           SizedBox(width: 10),
@@ -90,6 +96,8 @@ class _BlocCounterView extends StatelessWidget {
             onPressed: () {
               reset(context, 0);
             },
+            backgroundColor: Colors.purple,
+            foregroundColor: Colors.white,
             child: Icon(Icons.refresh_rounded),
           ),
         ],
