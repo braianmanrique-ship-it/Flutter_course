@@ -21,6 +21,13 @@ class HomeScreen extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () => context.push("/counter-bloc"),
           ),
+          Divider(),
+          ListTile(
+            title: Text("Register"),
+            subtitle: Text("Registro de usuario"),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () => context.push("/register"),
+          ),
         ],
       ),
     );
