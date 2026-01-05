@@ -4,16 +4,18 @@ class CustomTextFormField extends StatelessWidget {
   final String? label;
   final String? hintText;
   final IconData? prefixIcon;
-  Function(String)? onChanged;
+  final Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final bool isPassword;
 
   CustomTextFormField({
     super.key,
-    this.label,
-    this.hintText,
-    this.prefixIcon,
-    this.onChanged,
+    required this.label,
+    required this.hintText,
+    required this.prefixIcon,
+    required this.onChanged,
     this.validator,
+    this.isPassword = false,
   });
 
   @override
@@ -21,15 +23,9 @@ class CustomTextFormField extends StatelessWidget {
     final border = OutlineInputBorder(borderRadius: BorderRadius.circular(50));
 
     return TextFormField(
-      onChanged: (value) {
-        debugPrint(value);
-      },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'El campo es requerido';
-        }
-        return null;
-      },
+      onChanged: onChanged,
+      validator: validator,
+      obscureText: isPassword,
       decoration: InputDecoration(
         enabledBorder: border,
         focusedBorder: border.copyWith(
