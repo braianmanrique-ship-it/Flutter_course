@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form/presentation/bloc/register/register_cubit.dart';
 import 'package:form/presentation/screens/widgets/inputs/text_form_field.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -8,7 +10,10 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Register')),
-      body: _RegisterView(),
+      body: BlocProvider(
+        create: (context) => RegisterCubit(),
+        child: _RegisterView(),
+      ),
     );
   }
 }
@@ -34,12 +39,11 @@ class _RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<_RegisterForm> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  String name = '';
-  String email = '';
-  String password = '';
 
   @override
   Widget build(BuildContext context) {
+    final registerCubit = context.watch<RegisterCubit>();
+
     return Form(
       key: _formkey,
       child: Column(
@@ -52,7 +56,8 @@ class _RegisterFormState extends State<_RegisterForm> {
             hintText: 'Ingrese su nombre completo',
             prefixIcon: Icons.person,
             onChanged: (value) {
-              name = value;
+              registerCubit.usernameChanged(value);
+              _formkey.currentState?.validate();
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -74,7 +79,8 @@ class _RegisterFormState extends State<_RegisterForm> {
             hintText: 'Ingrese su email',
             prefixIcon: Icons.email,
             onChanged: (value) {
-              email = value;
+              registerCubit.emailChanged(value);
+              _formkey.currentState?.validate();
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -93,7 +99,8 @@ class _RegisterFormState extends State<_RegisterForm> {
             prefixIcon: Icons.lock,
             isPassword: true,
             onChanged: (value) {
-              password = value;
+              registerCubit.passwordChanged(value);
+              _formkey.currentState?.validate();
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -108,10 +115,8 @@ class _RegisterFormState extends State<_RegisterForm> {
 
           const SizedBox(height: 20),
           FilledButton.tonalIcon(
-            onPressed: () {
-              final isValid = _formkey.currentState!.validate();
-              if (!isValid) return;
-              print("Capturando datos: $name, $email, $password");
+            onPressed: () async {
+              registerCubit.onSubmit();
             },
             icon: Icon(Icons.save_alt),
             label: Text('Register'),
