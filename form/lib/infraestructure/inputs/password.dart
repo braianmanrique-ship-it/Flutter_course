@@ -7,15 +7,34 @@ class PasswordInput extends FormzInput<String, PasswordInputError> {
 
   const PasswordInput.dirty([super.value = '']) : super.dirty();
 
+  String? get errorMessage {
+    if (isValid || isPure) return null;
+
+    if (displayError == PasswordInputError.empty) {
+      return 'El campo es requerido';
+    }
+    if (displayError == PasswordInputError.minLength) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    }
+    if (displayError == PasswordInputError.maxLength) {
+      return 'La contraseña debe tener menos de 100 caracteres';
+    }
+    if (value.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    }
+    if (value.length > 20) {
+      return 'La contraseña debe tener menos de 20 caracteres';
+    }
+    return null;
+  }
+
   @override
   PasswordInputError? validator(String value) {
     if (value.isEmpty) {
       return PasswordInputError.empty;
-    }
-    if (value.length < 3) {
+    } else if (value.length < 6) {
       return PasswordInputError.minLength;
-    }
-    if (!value.contains('@') || !value.contains('.')) {
+    } else if (value.length > 100) {
       return PasswordInputError.maxLength;
     }
 

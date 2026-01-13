@@ -7,8 +7,9 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final bool isPassword;
+  final String? errorMessage;
 
-  CustomTextFormField({
+  const CustomTextFormField({
     super.key,
     required this.label,
     required this.hintText,
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.onChanged,
     this.validator,
     this.isPassword = false,
+    this.errorMessage,
   });
 
   @override
@@ -42,7 +44,7 @@ class CustomTextFormField extends StatelessWidget {
         focusedErrorBorder: border.copyWith(
           borderSide: BorderSide(color: Colors.red, width: 2),
         ),
-        errorText: null,
+        errorText: errorMessage,
       ),
     );
   }

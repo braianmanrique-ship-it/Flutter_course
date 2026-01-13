@@ -7,6 +7,22 @@ class UsernameInput extends FormzInput<String, UsernameInputError> {
 
   const UsernameInput.dirty([super.value = '']) : super.dirty();
 
+  String? get errorMessage {
+    if (isValid || isPure) return null;
+
+    if (displayError == UsernameInputError.empty) {
+      return 'El campo es requerido';
+    }
+    if (displayError == UsernameInputError.minLength) {
+      return 'El nombre debe tener al menos 3 caracteres';
+    }
+    if (displayError == UsernameInputError.maxLength) {
+      return 'El nombre debe tener menos de 50 caracteres';
+    }
+
+    return null;
+  }
+
   @override
   UsernameInputError? validator(String value) {
     if (value.isEmpty) {

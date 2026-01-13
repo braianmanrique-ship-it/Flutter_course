@@ -25,9 +25,9 @@ class RegisterState extends Equatable {
     bool? isValid,
   }) => RegisterState(
     formStatus: formStatus ?? this.formStatus,
-    name: name as UsernameInput,
-    email: email as EmailInput,
-    password: password as PasswordInput,
+    name: name != null ? UsernameInput.dirty(name) : this.name,
+    email: email != null ? EmailInput.dirty(email) : this.email,
+    password: password != null ? PasswordInput.dirty(password) : this.password,
     isValid: isValid ?? this.isValid,
   );
 
