@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notifications/config/theme/app_theme.dart';
 import 'package:notifications/config/router/routes.dart';
+import 'package:notifications/presentation/blocs/notifications/notifications_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => NotificationsBloc())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
