@@ -12,4 +12,18 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       // TODO: implement event handler
     }); */
   }
+
+  void requestPermissions() async {
+    final messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: true,
+      provisional: false,
+      sound: true,
+    );
+    settings.authorizationStatus;
+  }
 }
