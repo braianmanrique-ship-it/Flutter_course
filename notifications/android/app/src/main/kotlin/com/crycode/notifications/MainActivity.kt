@@ -1,4 +1,4 @@
-package com.example.notifications
+package com.crycode.notifications
 
 import io.flutter.embedding.android.FlutterActivity
 
