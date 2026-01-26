@@ -11,8 +11,14 @@ part 'notifications_event.dart';
 part 'notifications_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+
   NotificationsBloc() : super(NotificationsState()) {
     on<NotificationsStatusChanged>(_notificationsStatusChanged);
+    //check permissions
+    //requestPermissions();
+    _initialStatusNotifications();
+    _getToken();
   }
 
   //firebase
@@ -22,6 +28,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     );
   }
 
+  //event handler
   void _notificationsStatusChanged(
     NotificationsStatusChanged event,
     Emitter<NotificationsState> emit,
@@ -29,8 +36,21 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     emit(state.copyWith(status: event.status));
   }
 
+  //initial status notifications
+  void _initialStatusNotifications() async {
+    final settings = await messaging.getNotificationSettings();
+    add(NotificationsStatusChanged(status: settings.authorizationStatus));
+  }
+
+  //toket
+  void _getToken() async {
+    if (state.status == AuthorizationStatus.notDetermined) return;
+    final token = await messaging.getToken();
+    print('Token: $token');
+  }
+
+  //request permissions
   void requestPermissions() async {
-    final messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -42,5 +62,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     );
 
     add(NotificationsStatusChanged(status: settings.authorizationStatus));
+    _getToken();
   }
 }
