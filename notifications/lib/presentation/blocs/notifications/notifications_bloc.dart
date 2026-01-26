@@ -18,7 +18,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     //check permissions
     //requestPermissions();
     _initialStatusNotifications();
-    _getToken();
+    //listen notifications
+    _foregroundNotifications();
   }
 
   //firebase
@@ -40,14 +41,33 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   void _initialStatusNotifications() async {
     final settings = await messaging.getNotificationSettings();
     add(NotificationsStatusChanged(status: settings.authorizationStatus));
+    _getToken();
   }
 
-  //toket
+  //token
   void _getToken() async {
     if (state.status == AuthorizationStatus.notDetermined) return;
     final token = await messaging.getToken();
     print('Token: $token');
   }
+
+  //listen notifications
+  void _remoteNotifications(RemoteMessage message) async {
+    print('Remote message: ${message.toMap()}');
+
+    if (message.notification != null) {
+      print('Notification: ${message.notification}');
+    }
+  }
+
+  //? tipos de notificaciones
+  //1. foreground: se muestra en la app
+  void _foregroundNotifications() {
+    final listener = FirebaseMessaging.onMessage.listen(_remoteNotifications);
+    listener.cancel();
+  }
+  //2. background: se muestra en la notificación
+  //3. terminated: se muestra en la notificación
 
   //request permissions
   void requestPermissions() async {
