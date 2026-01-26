@@ -12,9 +12,7 @@ part 'notifications_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc() : super(NotificationsState()) {
-    /*  on<NotificationsEvent>((event, emit) {
-      // TODO: implement event handler
-    }); */
+    on<NotificationsStatusChanged>(_notificationsStatusChanged);
   }
 
   //firebase
@@ -22,6 +20,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+  }
+
+  void _notificationsStatusChanged(
+    NotificationsStatusChanged event,
+    Emitter<NotificationsState> emit,
+  ) {
+    emit(state.copyWith(status: event.status));
   }
 
   void requestPermissions() async {
@@ -35,6 +40,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       provisional: false,
       sound: true,
     );
-    settings.authorizationStatus;
+
+    add(NotificationsStatusChanged(status: settings.authorizationStatus));
   }
 }
