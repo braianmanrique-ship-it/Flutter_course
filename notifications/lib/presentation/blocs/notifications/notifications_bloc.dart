@@ -60,14 +60,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
-  //? tipos de notificaciones
-  //1. foreground: se muestra en la app
   void _foregroundNotifications() {
-    final listener = FirebaseMessaging.onMessage.listen(_remoteNotifications);
-    listener.cancel();
+    FirebaseMessaging.onMessage.listen(_remoteNotifications);
   }
-  //2. background: se muestra en la notificación
-  //3. terminated: se muestra en la notificación
 
   //request permissions
   void requestPermissions() async {
