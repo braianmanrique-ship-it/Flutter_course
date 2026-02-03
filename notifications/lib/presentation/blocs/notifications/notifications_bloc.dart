@@ -112,4 +112,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     add(NotificationsStatusChanged(status: settings.authorizationStatus));
     _getToken();
   }
+
+  PushMessage? getPushMessageId(String id) {
+    final exit = state.notifications.any((element) => element.messageId == id);
+    if (!exit) return null;
+    return state.notifications.firstWhere((element) => element.messageId == id);
+  }
 }
