@@ -1,13 +1,21 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notifications/config/theme/app_theme.dart';
 import 'package:notifications/config/router/routes.dart';
 import 'package:notifications/presentation/blocs/notifications/notifications_bloc.dart';
 
+@pragma('vm:entry-point')
+Future<void> firebaseBackgroundMessageHandler(RemoteMessage message) async {
+  // Runs in a separate isolate; no Bloc/Flutter context available.
+  // Keep logic minimal (e.g. logging, local storage).
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationsBloc.initializeFirebaseNotifications();
+  FirebaseMessaging.onBackgroundMessage(firebaseBackgroundMessageHandler);
   FirebaseAnalytics.instance;
   runApp(
     MultiBlocProvider(

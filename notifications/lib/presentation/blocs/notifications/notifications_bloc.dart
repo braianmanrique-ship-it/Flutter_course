@@ -22,6 +22,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _foregroundNotifications();
   }
 
+
   //firebase
   static Future<void> initializeFirebaseNotifications() async {
     await Firebase.initializeApp(
