@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 //firebase
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:notifications/firebase_options.dart';
+
+import 'package:notifications/config/domain/entities/push_message.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -15,13 +20,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   NotificationsBloc() : super(NotificationsState()) {
     on<NotificationsStatusChanged>(_notificationsStatusChanged);
+    //listen notifications received
+    on<NotificationsReceived>(_notificationsReceived);
     //check permissions
     //requestPermissions();
     _initialStatusNotifications();
     //listen notifications
     _foregroundNotifications();
   }
-
 
   //firebase
   static Future<void> initializeFirebaseNotifications() async {
@@ -45,20 +51,46 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _getToken();
   }
 
+  //notifications received
+  void _notificationsReceived(
+    NotificationsReceived event,
+    Emitter<NotificationsState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        notifications: [event.pushMessage, ...state.notifications],
+      ),
+    );
+  }
+
   //token
   void _getToken() async {
     if (state.status == AuthorizationStatus.notDetermined) return;
     final token = await messaging.getToken();
-    print('Token: $token');
+    debugPrint('Token: $token');
   }
 
   //listen notifications
   void _remoteNotifications(RemoteMessage message) async {
-    print('Remote message: ${message.toMap()}');
+    debugPrint('Remote message: ${message.toMap()}');
 
     if (message.notification != null) {
-      print('Notification: ${message.notification}');
+      debugPrint('Notification: ${message.notification}');
     }
+
+    final pushMessage = PushMessage(
+      messageId:
+          message.messageId?.replaceAll(":", "").replaceAll("%", "") ?? "",
+      title: message.notification?.title ?? "",
+      body: message.notification?.body ?? "",
+      sentDate: DateTime.now(),
+      data: message.data,
+      imageUrl: Platform.isAndroid
+          ? message.notification?.android?.imageUrl
+          : message.notification?.apple?.imageUrl,
+    );
+
+    add(NotificationsReceived(pushMessage: pushMessage));
   }
 
   void _foregroundNotifications() {
