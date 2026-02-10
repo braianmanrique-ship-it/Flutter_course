@@ -33,20 +33,22 @@ class _DeatilsView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Message ID'),
+          Text('Message ID', style: Theme.of(context).textTheme.titleLarge),
           Text(pushMessageId),
 
           if (pushMessage.imageUrl != null)
-            Image.network(pushMessage.imageUrl!),
+            Image.network(pushMessage.imageUrl!, fit: BoxFit.cover),
 
-          Text('Title'),
+          Text('Title', style: Theme.of(context).textTheme.titleLarge),
           Text(pushMessage.title),
 
-          Text('Body'),
+          Text('Body', style: Theme.of(context).textTheme.titleLarge),
           Text(pushMessage.body),
 
-          Text('Sent Date'),
+          Text('Sent Date', style: Theme.of(context).textTheme.titleLarge),
           Text(pushMessage.sentDate.toString()),
         ],
       ),

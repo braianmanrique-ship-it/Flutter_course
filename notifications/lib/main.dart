@@ -70,11 +70,14 @@ class _HandleNotificationInteractionState
   }
 
   void _handleMessage(RemoteMessage message) {
+
+    if(mounted){
     context.read<NotificationsBloc>().remoteNotifications(message);
+    }
 
     final pushMessageId =
         message.messageId?.replaceAll(":", "").replaceAll("%", "") ?? "";
-    context.push("/push-message/$pushMessageId");
+    appRouter.push("/push-message/$pushMessageId");
   }
 
   @override
