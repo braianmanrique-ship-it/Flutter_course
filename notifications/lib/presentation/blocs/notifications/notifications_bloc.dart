@@ -71,7 +71,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   }
 
   //listen notifications
-  void _remoteNotifications(RemoteMessage message) async {
+  void remoteNotifications(RemoteMessage message) async {
     debugPrint('Remote message: ${message.toMap()}');
 
     if (message.notification != null) {
@@ -94,7 +94,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   }
 
   void _foregroundNotifications() {
-    FirebaseMessaging.onMessage.listen(_remoteNotifications);
+    FirebaseMessaging.onMessage.listen(remoteNotifications);
   }
 
   //request permissions
