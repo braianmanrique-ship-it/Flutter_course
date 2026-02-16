@@ -133,7 +133,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     //local
     await requestLocalNotificationsPermissions();
-    await LocalNotifications.initializeLocalNotifications();
+    await LocalNotifications().initializeLocalNotifications();
 
     add(NotificationsStatusChanged(status: settings.authorizationStatus));
     _getToken();

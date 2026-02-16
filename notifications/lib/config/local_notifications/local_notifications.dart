@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:notifications/config/router/routes.dart';
 
 class LocalNotifications {
   static final flutterLocalNotificationsPlugin =
@@ -12,7 +13,7 @@ class LocalNotifications {
         ?.requestNotificationsPermission();
   }
 
-  static Future<void> initializeLocalNotifications() async {
+  Future<void> initializeLocalNotifications() async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     const androidInitializationSettings = AndroidInitializationSettings(
@@ -25,6 +26,7 @@ class LocalNotifications {
 
     await flutterLocalNotificationsPlugin.initialize(
       settings: initializationSettings,
+      onDidReceiveNotificationResponse: onDidRecieveNotificationResponse,
     );
   }
 
@@ -51,5 +53,10 @@ class LocalNotifications {
       notificationDetails: notificationsDetails,
       payload: data ?? "",
     );
+  }
+
+  void onDidRecieveNotificationResponse(NotificationResponse response) {
+    print('onDidRecieveNotificationResponse: $response');
+    appRouter.push("/push-message/${response.payload}");
   }
 }
