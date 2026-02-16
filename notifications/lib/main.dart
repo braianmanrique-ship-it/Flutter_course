@@ -2,10 +2,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notifications/config/local_notifications/local_notifications.dart';
 import 'package:notifications/config/theme/app_theme.dart';
 import 'package:notifications/config/router/routes.dart';
 import 'package:notifications/presentation/blocs/notifications/notifications_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseBackgroundMessageHandler(RemoteMessage message) async {
@@ -15,9 +15,12 @@ Future<void> firebaseBackgroundMessageHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await NotificationsBloc.initializeFirebaseNotifications();
   FirebaseMessaging.onBackgroundMessage(firebaseBackgroundMessageHandler);
   FirebaseAnalytics.instance;
+
+  await LocalNotifications.initializeLocalNotifications();
   runApp(
     MultiBlocProvider(
       providers: [BlocProvider(create: (_) => NotificationsBloc())],
@@ -70,9 +73,8 @@ class _HandleNotificationInteractionState
   }
 
   void _handleMessage(RemoteMessage message) {
-
-    if(mounted){
-    context.read<NotificationsBloc>().remoteNotifications(message);
+    if (mounted) {
+      context.read<NotificationsBloc>().remoteNotifications(message);
     }
 
     final pushMessageId =

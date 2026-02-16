@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notifications/config/domain/entities/push_message.dart';
+import 'package:notifications/domain/entities/push_message.dart';
 import 'package:notifications/presentation/blocs/notifications/notifications_bloc.dart';
 
 class DetailsScreen extends StatelessWidget {
