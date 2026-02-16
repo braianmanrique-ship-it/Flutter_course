@@ -19,6 +19,7 @@ part 'notifications_state.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  int notificationId = 0;
 
   NotificationsBloc() : super(NotificationsState()) {
     on<NotificationsStatusChanged>(_notificationsStatusChanged);
@@ -92,6 +93,12 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
           : message.notification?.apple?.imageUrl,
     );
 
+    LocalNotifications.showNotification(
+      id: notificationId++,
+      title: pushMessage.title,
+      body: pushMessage.body,
+      data: pushMessage.messageId,
+    );
     add(NotificationsReceived(pushMessage: pushMessage));
   }
 
