@@ -20,7 +20,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseBackgroundMessageHandler);
   FirebaseAnalytics.instance;
 
-  await LocalNotifications().initializeLocalNotifications();
+  //await LocalNotifications().initializeLocalNotifications();
   runApp(
     MultiBlocProvider(
       providers: [
