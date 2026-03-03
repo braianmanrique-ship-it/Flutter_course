@@ -20,8 +20,11 @@ class LocalNotifications {
       "ic_launcher",
     );
 
+    const darwinInitializationSettings = DarwinInitializationSettings();
+
     const initializationSettings = InitializationSettings(
       android: androidInitializationSettings,
+      iOS: darwinInitializationSettings,
     );
 
     await flutterLocalNotificationsPlugin.initialize(
